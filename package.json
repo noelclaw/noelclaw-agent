@@ -1,0 +1,24 @@
+{
+  "name": "circuit-agent",
+  "version": "0.3.0",
+  "description": "LLM-powered Base chain trading agent with Telegram, tool-use, and CIRCUIT Data API",
+  "main": "agent.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node agent.js start",
+    "init": "node agent.js init",
+    "setup": "node agent.js setup",
+    "wallet": "node agent.js wallet",
+    "status": "node agent.js status",
+    "scan": "node agent.js scan"
+  },
+  "dependencies": {
+    "ethers": "^6.13.0",
+    "grammy": "^1.41.1",
+    "node-fetch": "^3.3.2",
+    "openai": "^6.27.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
