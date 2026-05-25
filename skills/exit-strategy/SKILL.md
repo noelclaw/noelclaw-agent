@@ -28,7 +28,7 @@ These are situations where you should exit even if hard rules haven't triggered:
 1. **Swarm flip**: Majority of swarm signals flipped from bullish to bearish on your token → exit now, even at a small gain or loss
 2. **Rug indicators late-emerge**: Whale exit detected in `token_holders`, LP drain in progress → exit immediately
 3. **Better opportunity**: A score 80+ dip-reversal appears and you're at 3 open positions → exit your weakest position to free capital
-4. **Macro deterioration**: SOL drops >5% while you're in a meme position → the rising tide just reversed, exit
+4. **Macro deterioration**: ETH drops >5% while you're in a meme position → the rising tide just reversed, exit
 
 ### Partial exits (the smart middle ground)
 

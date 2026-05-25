@@ -6,23 +6,23 @@
 
 ### Option 1 — systemd (Linux servers)
 
-A service unit template is provided at `deploy/circuit-agent.service`. Install it for your user:
+A service unit template is provided at `deploy/noelclaw.service`. Install it for your user:
 
 ```bash
 # 1. Copy and edit the service file — update WorkingDirectory to your install path
-cp deploy/circuit-agent.service ~/.config/systemd/user/circuit-agent.service
-nano ~/.config/systemd/user/circuit-agent.service
+cp deploy/noelclaw.service ~/.config/systemd/user/noelclaw.service
+nano ~/.config/systemd/user/noelclaw.service
 
 # 2. Enable and start
 systemctl --user daemon-reload
-systemctl --user enable --now circuit-agent
+systemctl --user enable --now noelclaw
 
 # 3. View live logs
-journalctl --user -u circuit-agent -f
+journalctl --user -u noelclaw -f
 
 # 4. Stop or restart
-systemctl --user stop circuit-agent
-systemctl --user restart circuit-agent
+systemctl --user stop noelclaw
+systemctl --user restart noelclaw
 ```
 
 > **Note:** `systemctl --user` services only run while you're logged in by default. To keep them running after logout, run: `loginctl enable-linger $USER`
@@ -33,10 +33,10 @@ PM2 works on Linux, macOS, and Windows and handles restart-on-failure and log ro
 
 ```bash
 npm install -g pm2
-pm2 start agent.js --name circuit-agent -- start
+pm2 start agent.js --name noelclaw -- start
 pm2 save           # persist across reboots
 pm2 startup        # follow the printed instructions once
-pm2 logs circuit-agent
+pm2 logs noelclaw
 ```
 
 ### Simplest option — screen / tmux
@@ -44,9 +44,9 @@ pm2 logs circuit-agent
 If you just want to detach and leave it running:
 
 ```bash
-screen -S circuit
+screen -S noelclaw
 node agent.js start
-# Ctrl+A, D to detach — reconnect with: screen -r circuit
+# Ctrl+A, D to detach — reconnect with: screen -r noelclaw
 ```
 
 ---

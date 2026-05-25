@@ -1,6 +1,6 @@
 # Security
 
-circuit-agent holds a real EVM wallet on Base and executes real trades. Security matters.
+noelclaw holds a real EVM wallet on Base and executes real trades. Security matters.
 
 ---
 
@@ -24,7 +24,7 @@ Instead of a static `.env` file, Infisical injects secrets at runtime:
 infisical run -- node agent.js
 ```
 
-Benefits for circuit-agent deployments:
+Benefits for noelclaw deployments:
 - Secrets are encrypted at rest and in transit — your private key never lives in a plaintext file on your server
 - Secrets are centrally managed — rotate your key once, all agents pick it up automatically
 - Audit log — you can see exactly when and where your secrets were accessed
@@ -33,7 +33,7 @@ Benefits for circuit-agent deployments:
 Infisical has a free tier that covers personal and small-team use. See their [quick-start docs](https://infisical.com/docs/getting-started/overview) to get set up.
 
 If you believe your key has been exposed:
-1. Stop the agent immediately: `systemctl --user stop circuit-agent`
+1. Stop the agent immediately: `systemctl --user stop noelclaw`
 2. Transfer all funds to a new wallet
 3. Generate a new wallet: `node agent.js init`
 
@@ -74,7 +74,7 @@ Keys stored in `.env`:
 - `BASE_RPC_URL` — Base chain RPC (read access + transaction submission)
 - `MINIMAX_API_KEY` — LLM inference spend
 - `TELEGRAM_BOT_TOKEN` — controls your bot
-- `CIRCUIT_INTERNAL_KEY` — self-hosters only
+- `NOELCLAW_INTERNAL_KEY` — self-hosters only (optional)
 
 Keep these out of logs and issue reports.
 
@@ -90,7 +90,7 @@ The bot only responds to `heartbeatChatId` (your user ID) by default. If you wan
 
 If you find a security issue — especially anything involving wallet access, key exposure, or trade manipulation — please report it privately:
 
-- **Telegram DM:** [@circuitdev](https://t.me/circuitdev)
+- **Telegram DM:** [@noelclaw](https://t.me/noelclaw)
 
 Please do not open a public GitHub issue for security vulnerabilities. Give us a chance to patch before disclosure.
 
@@ -106,7 +106,7 @@ We aim to respond within 48 hours and will credit researchers who report valid i
 
 ## Disclaimer
 
-circuit-agent trades real money. You are responsible for:
+noelclaw trades real money. You are responsible for:
 - Funding the wallet with an amount you can afford to lose
 - Understanding the trading strategy and risk parameters
 - Monitoring the agent's behavior, especially early in deployment

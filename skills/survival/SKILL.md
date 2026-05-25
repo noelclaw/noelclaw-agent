@@ -1,47 +1,46 @@
 # Skill: Survival Economics
 
-You run on CIRCUIT. Every API call costs CIRCUIT. You need to earn more CIRCUIT than you burn.
+You run on ETH. Every trade uses ETH. You need to protect your balance.
 
 ## Your economics
 
-API costs are priced in **USD and paid in CIRCUIT** — the CIRCUIT amount per call varies with market price.
+ETH is your trading capital. All market data comes from free public APIs — there are no API costs in ETH.
 
-| Call type | USD cost | CIRCUIT at $0.00001 | CIRCUIT at $0.0001 |
-|-----------|----------|-------------------|------------------|
-| token-price, oracle-prices, news | $0.001 | ~100 | ~10 |
-| market-overview, swarm-feed, sentiment | $0.002 | ~200 | ~20 |
-| scan, token-info, defi-overview | $0.005 | ~500 | ~50 |
-| wallet-analytics | $0.010 | ~1000 | ~100 |
-
-- **CIRCUIT income**: 25% of each profitable trade's SOL profit is auto-converted to CIRCUIT
-- **Break-even**: Win enough trades to cover your daily API spend. Check `data/agent-notes.json` for your tracked burn rate.
+- **ETH income**: 25% of each profitable trade's ETH profit is auto-converted to NOELCLAW
+- **ETH expense**: each trade entry costs `entryBudgetEth` (default 0.001 ETH)
+- **Break-even**: win enough trades to cover gas fees and grow your ETH balance
 
 ## Survival tiers
 
-| CIRCUIT Balance | Status | Action |
-|--------------|--------|--------|
-| > 500k | Thriving | Trade aggressively, use swarm intel freely |
-| 100k–500k | Healthy | Normal operations |
-| 50k–100k | Cautious | Reduce heartbeat frequency, fewer swarm reads |
-| 20k–50k | Warning | Focus only on highest-confidence trades |
-| < 20k | Critical | Pause trading, preserve CIRCUIT for essential calls only |
+| ETH Balance | Status | Action |
+|-------------|--------|--------|
+| > 0.05 ETH | Thriving | Trade aggressively |
+| 0.01–0.05 ETH | Healthy | Normal operations |
+| 0.005–0.01 ETH | Cautious | Reduce position frequency, highest-confidence only |
+| 0.002–0.005 ETH | Warning | Only REVERSAL/DEEP-REVERSAL patterns (score >= 60) |
+| < 0.002 ETH | Critical | Pause trading, diagnose what's failing |
 
-## To grow CIRCUIT balance
+## To grow ETH balance
 
-1. **Win trades** — the only reliable income. 25% of profit auto-buys CIRCUIT.
-2. **Be selective** — fewer bad trades = less CIRCUIT wasted on losses
-3. **Publish good signals** — build swarm reputation. High-reputation signals earn referral fees when others follow them.
+1. **Win trades** — the only reliable income. Every profitable close grows your balance.
+2. **Be selective** — fewer bad trades = less ETH wasted on losing positions
+3. **Reduce position size** — if on a losing streak, drop `entryBudgetEth` by 50% until win rate recovers
 
 ## Trade selection when in survival mode
 
-When CIRCUIT < 50k:
+When ETH < 0.005:
 - Only take REVERSAL or DEEP-REVERSAL patterns (score >= 60)
-- Skip token_info and swarm calls to conserve CIRCUIT
-- Run check_wallet before every buy to confirm you can afford fees
+- Skip positions with any rug warning signals
+- Run `check_wallet` before every buy to confirm you can afford the entry + gas
 
 ## The compounding loop
 
-Profit → CIRCUIT buy → more API calls → better data → better entry timing → more profit
+Win trade → close with profit → 25% auto-buys NOELCLAW → ETH balance grows → more trades → more wins
 
-More data = better decisions = more wins = more CIRCUIT. This is the game.
- 
+More selective entries = better decisions = more wins = growing ETH balance. That's the game.
+
+## ETH balance management
+
+- Always keep at least `minEthPause` (0.001 ETH) in reserve — this is the hard floor
+- If ETH drops below `minEthWarning` (0.005 ETH), trading is automatically paused by the reflect loop
+- After a pause: diagnose the root cause before resuming — don't just resume and repeat the loss pattern

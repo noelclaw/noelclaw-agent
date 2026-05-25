@@ -1,14 +1,14 @@
 # Contributing
 
-circuit-agent is open source under the MIT license. Contributions are welcome — bug fixes, new skills, new tools, performance improvements, and documentation.
+noelclaw is open source under the MIT license. Contributions are welcome — bug fixes, new skills, new tools, performance improvements, and documentation.
 
 ---
 
 ## Development Setup
 
 ```bash
-git clone https://github.com/circuitllm/agent
-cd circuit-agent
+git clone https://github.com/noelclaw/agent
+cd noelclaw
 npm install
 cp .env.example .env          # Fill in your keys
 node agent.js init            # Generate wallet + register with swarm
@@ -69,7 +69,7 @@ Tools are LLM-callable functions defined in `lib/tools/`.
 1. Find the right category file, or create a new one:
    - `lib/tools/market.js` — read-only Base/crypto data
    - `lib/tools/trading.js` — trade execution (buy, sell, wallet)
-   - `lib/tools/swarm.js` — swarm signals, tasks, consensus
+   - `lib/tools/swarm.js` — swarm signal stubs (no-ops)
    - `lib/tools/memory.js` — per-user and agent-self memory
    - `lib/tools/self.js` — agent self-improvement (history, config, strategy, skills)
    - `lib/tools/web.js` — web search, URL fetch
@@ -197,7 +197,7 @@ Good first contributions:
 
 Bigger contributions worth discussing first:
 - New tools in `lib/tools/`
-- New data sources in the CIRCUIT API integration
+- New data sources (DexScreener, GeckoTerminal, GoPlusLabs integrations)
 - Strategy modules in `lib/strategies/`
 - Test coverage
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// NOTE: This script is a legacy Solana utility — not used on Base chain.
 // scripts/close-empty-accounts.js
 // This was a Solana-specific utility (closing empty SPL token accounts to reclaim rent).
 // It does not apply on Base chain — EVM wallets have no token account rent mechanics.

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// setup-wizard.js — cross-platform interactive setup (Windows / macOS / Linux)
+// setup-wizard.js — noelclaw cross-platform interactive setup (Windows / macOS / Linux)
 //
 // Usage:
 //   node setup-wizard.js                              — interactive setup
@@ -104,7 +104,7 @@ async function main() {
   });
 
   // ── Step 1: Base RPC URL ───────────────────────────────────────────────────
-  stepHeader(1, 5, 'BASE RPC URL');
+  stepHeader(1, 4, 'BASE RPC URL');
   console.log(`  ${D('Used for all Base chain queries: wallet balance, token data, swap execution.')}`);
   console.log(`  ${D('Free options: Alchemy, Infura, QuickNode — or use the public Base endpoint.')}`);
   console.log(`  ${D('Get one (30 seconds):')}  ${Y('https://alchemy.com')}  ${D('→ create app → select Base → copy RPC URL')}`);
@@ -134,7 +134,7 @@ async function main() {
   console.log(`  ${G('✓  RPC configured')}`);
 
   // ── Step 2: LLM provider ──────────────────────────────────────────────────
-  stepHeader(2, 5, 'LLM PROVIDER');
+  stepHeader(2, 4, 'LLM PROVIDER');
   console.log(`  ${D('The AI brain — used for Telegram chat, reflection, and exception handling.')}`);
   console.log('');
   console.log(`  ${G('1')}  ${B('MiniMax')}     ${D('·  cloud, MiniMax-M2.7, API key required')}`);
@@ -175,7 +175,7 @@ async function main() {
   console.log(`  ${G('✓  Provider:')} ${BG(llmProvider)}`);
 
   // ── Step 3: AI model ──────────────────────────────────────────────────────
-  stepHeader(3, 5, 'AI MODEL');
+  stepHeader(3, 4, 'AI MODEL');
   let agentModel;
 
   if (llmProvider === 'ollama') {
@@ -208,7 +208,7 @@ async function main() {
   console.log(`  ${G('✓  Model:')} ${BG(agentModel)}`);
 
   // ── Step 4: Telegram ──────────────────────────────────────────────────────
-  stepHeader(4, 5, 'TELEGRAM  (optional)');
+  stepHeader(4, 4, 'TELEGRAM  (optional)');
   console.log(`  ${D('Chat interface, trade alerts, and heartbeat messages.')}`);
   console.log(`  ${D('Create a bot:')}  Telegram → ${Y('@BotFather')} → /newbot`);
   console.log('');
@@ -236,35 +236,8 @@ async function main() {
     console.log(`  ${D('Skipped — add TELEGRAM_BOT_TOKEN to .env later to enable.')}`);
   }
 
-  // ── Step 5: CIRCUIT Data API ────────────────────────────────────────────────
-  stepHeader(5, 5, 'CIRCUIT DATA API');
-  console.log(`  ${D('Market data, rug checks, swarm intelligence, and token analysis.')}`);
-  console.log('');
-  console.log(`  ${G('public')}       ${B('https://api.circuitllm.dev')}  ${D('·  requires CIRCUIT balance')}`);
-  console.log(`  ${G('self-hosted')}  http://localhost:18700  ${D('·  free if running circuit-data-api locally')}`);
-  console.log('');
-
-  const existingBase = cfgGet('api.baseUrl') || 'https://api.circuitllm.dev';
-  console.log(`  ${D('current:')}  ${Y(existingBase)}`);
-  const apiAns = await ask(rl, '  API base URL (Enter to keep): ');
-  const apiBase = apiAns.trim() || existingBase;
-
-  const existingIk = envGet('CIRCUIT_INTERNAL_KEY');
-  let circuitInternalKey = existingIk;
-  {
-    const ikAns = await ask(rl, '  Internal key for self-hosted bypass (Enter to skip): ');
-    const ikTrimmed = ikAns.trim();
-    if (ikTrimmed) {
-      if (ikTrimmed.startsWith('pnk_') || ikTrimmed.startsWith('MCow')) {
-        console.log(`  ${R('✗  That looks like a node keypair (pnk_/MCow…), not an internal key.')}`);
-        console.log(`  ${D('  Find your key: circuit-data-api/.env → CIRCUIT_DATA_API_INTERNAL_KEY')}`);
-        console.log(`  ${D('  Keeping previous value.')}`);
-      } else {
-        circuitInternalKey = ikTrimmed;
-      }
-    }
-  }
-  console.log(`  ${G('✓  API:')} ${BG(apiBase)}`);
+  // ── (Step 5 removed — no external API required) ──────────────────────────
+  // All market data comes from free public sources (DexScreener, GeckoTerminal, GoPlusLabs)
 
   rl.close();
 
@@ -275,12 +248,11 @@ async function main() {
   const keypair = keypairArg || envGet('PRIVATE_KEY');
 
   const envContent = [
-    `# circuit-agent environment — updated ${new Date().toISOString()}`,
+    `# noelclaw environment — updated ${new Date().toISOString()}`,
     `PRIVATE_KEY=${keypair}`,
     `BASE_RPC_URL=${heliusRpcUrl}`,
     `MINIMAX_API_KEY=${minimaxKey}`,
     `TELEGRAM_BOT_TOKEN=${tgToken}`,
-    `CIRCUIT_INTERNAL_KEY=${circuitInternalKey}`,
   ].join('\n') + '\n';
 
   fs.writeFileSync(ENV_FILE, envContent);
@@ -297,9 +269,6 @@ async function main() {
 
   local.telegram      = local.telegram ?? {};
   if (tgChatId)       local.telegram.heartbeatChatId = tgChatId;
-
-  local.api           = local.api ?? {};
-  local.api.baseUrl   = apiBase;
 
   fs.writeFileSync(CFG_LOCAL, JSON.stringify(local, null, 2) + '\n');
   console.log(`  ${G('✓  config/agent.local.json updated')}`);
@@ -332,7 +301,7 @@ async function main() {
   console.log(`  ${D('optional')}`);
   console.log(`  ${D('  personality')}   cp soul.md soul.local.md`);
   if (process.platform !== 'win32') {
-    console.log(`  ${D('  as service')}    systemctl --user enable --now circuit-agent`);
+    console.log(`  ${D('  as service')}    systemctl --user enable --now noelclaw`);
   } else {
     console.log(`  ${D('  as service')}    see docs/windows-service.md`);
   }

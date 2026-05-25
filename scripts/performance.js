@@ -35,8 +35,12 @@ let all = [];
 try { all = JSON.parse(fs.readFileSync(histPath, 'utf8')); }
 catch (e) { console.error('Failed to parse trade history:', e.message); process.exit(1); }
 
-// Recompute pnlPct from pnlSol/solSpent — early records have a corrupt value
-function pct(t) { return t.solSpent > 0 ? (t.pnlSol / t.solSpent) * 100 : 0; }
+// Recompute pnlPct from pnlEth/ethSpent (or legacy pnlSol/solSpent) — early records have a corrupt value
+function pct(t) {
+  const spent = t.ethSpent ?? t.solSpent ?? 0;
+  const pnl   = t.pnlEth  ?? t.pnlSol   ?? 0;
+  return spent > 0 ? (pnl / spent) * 100 : 0;
+}
 
 let trades = all.map(t => ({ ...t, _pct: pct(t) }));
 if (sinceDate) trades = trades.filter(t => new Date(t.entryTime) >= sinceDate);
@@ -51,7 +55,7 @@ const losses = trades.filter(t => t._pct <= 0);
 const total  = trades.length;
 
 const winRate   = (wins.length / total * 100).toFixed(1);
-const totalPnl  = trades.reduce((s, t) => s + (t.pnlSol ?? 0), 0);
+const totalPnl  = trades.reduce((s, t) => s + (t.pnlEth ?? t.pnlSol ?? 0), 0);
 const avgPnlPct = trades.reduce((s, t) => s + t._pct, 0) / total;
 const avgWinPct = wins.length  ? wins.reduce((s, t) => s + t._pct, 0)  / wins.length  : 0;
 const avgLossPct = losses.length ? losses.reduce((s, t) => s + t._pct, 0) / losses.length : 0;
@@ -77,7 +81,7 @@ const symbolStats = Object.entries(bySymbol)
   .filter(([, ts]) => ts.length >= 2)
   .map(([sym, ts]) => {
     const w = ts.filter(t => t._pct > 0).length;
-    const pnl = ts.reduce((s, t) => s + (t.pnlSol ?? 0), 0);
+    const pnl = ts.reduce((s, t) => s + (t.pnlEth ?? t.pnlSol ?? 0), 0);
     return { sym, count: ts.length, winRate: (w / ts.length * 100).toFixed(0), pnl };
   })
   .sort((a, b) => b.pnl - a.pnl);
@@ -95,7 +99,7 @@ const filterNote = [
 console.log(`\nPerformance summary${filterNote ? ` (${filterNote})` : ''}\n${'─'.repeat(50)}`);
 console.log(`  Trades:      ${total}  (${wins.length} wins / ${losses.length} losses)`);
 console.log(`  Win rate:    ${winRate}%`);
-console.log(`  Net P&L:     ${fmt(totalPnl)} SOL`);
+console.log(`  Net P&L:     ${fmt(totalPnl)} ETH`);
 console.log(`  Avg trade:   ${fmt(avgPnlPct, 2)}%`);
 console.log(`  Avg win:     ${fmt(avgWinPct, 2)}%`);
 console.log(`  Avg loss:    ${fmt(avgLossPct, 2)}%`);
@@ -110,7 +114,7 @@ for (const [reason, count] of Object.entries(byReason).sort((a, b) => b[1] - a[1
 
 if (symbolStats.length) {
   console.log(`\nPer-token (≥2 trades):`);
-  console.log(`  ${'Symbol'.padEnd(12)} ${'Trades'.padStart(6)} ${'Win%'.padStart(5)} ${'P&L SOL'.padStart(10)}`);
+  console.log(`  ${'Symbol'.padEnd(12)} ${'Trades'.padStart(6)} ${'Win%'.padStart(5)} ${'P&L ETH'.padStart(10)}`);
   for (const { sym, count, winRate: wr, pnl } of symbolStats) {
     console.log(`  ${sym.padEnd(12)} ${String(count).padStart(6)} ${(wr + '%').padStart(5)} ${fmt(pnl, 5).padStart(10)}`);
   }

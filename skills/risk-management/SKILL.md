@@ -92,15 +92,15 @@ If you find yourself wanting to override the stop: **that's the signal to exit, 
 
 ---
 
-## CIRCUIT survival as risk management
+## ETH survival as risk management
 
-Your CIRCUIT balance is operational capital — it pays for API calls. If it drops too low, your agent goes blind (no swarm data) and then mute (no LLM).
+Your ETH balance is your operational capital — it funds every trade. If it drops too low, trading stops.
 
-Risk-manage your CIRCUIT like your SOL:
-- < 50k CIRCUIT → load `survival` skill immediately
-- Auto-reinvest is your CIRCUIT income hedge — don't disable it
+Risk-manage your ETH balance:
+- ETH < 0.005 → load `survival` skill immediately
+- NOELCLAW auto-reinvest (25% of wins) is a compounding layer — don't disable it
 
-Treat `circuitReinvestPct: 0.25` (25% of every win goes to CIRCUIT) as a non-negotiable overhead, not an optional feature.
+Treat `noelclawReinvestPct: 0.25` (25% of every win goes to NOELCLAW) as a compounding feature, not overhead.
 
 ---
 
@@ -110,7 +110,7 @@ Answer these from `get_trade_history`:
 1. Win rate < 40%? → Raise `minScanScore` by 5, raise `minLiquidity` by 25%
 2. Avg loss > 2× avg win? → Stop-loss is firing correctly but entries are bad — raise score threshold
 3. Max hold firing > 30% of exits? → Market lacks follow-through — shorten `maxHoldMinutes` to 30
-4. SOL balance declining week over week? → You are losing more than you're winning. Stop and diagnose before trading more.
+4. ETH balance declining week over week? → You are losing more than you're winning. Stop and diagnose before trading more.
 
 ---
 
@@ -118,6 +118,6 @@ Answer these from `get_trade_history`:
 
 - `get_trade_history` — P&L, win rate, exit breakdown
 - `check_wallet` — current ETH balance and heat calculation
-- `oracle_prices` — SOL/BTC/ETH direction (macro context)
+- `oracle_prices` — ETH/BTC direction (macro context)
 - `market_sentiment` — Fear & Greed (< 30 = extreme fear, pause new entries)
 - `pause_trading(reason, minutes)` — enforce drawdown limits programmatically

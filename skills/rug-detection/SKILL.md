@@ -2,7 +2,7 @@
 
 How to detect rug-pull risk before and after buying a token.
 
-## Pre-buy rug check (via circuit-data-api)
+## Pre-buy rug check (via GoPlusLabs)
 
 Call `token_info` — it includes RugCheck risk data:
 

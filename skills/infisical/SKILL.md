@@ -1,12 +1,12 @@
 # Skill: Secrets Management
 
-> **Optional upgrade.** The standard `.env` file is sufficient for most single-agent deployments and is what the setup wizard configures. This skill covers Infisical — a centralized secrets manager useful for teams, multi-agent swarms, or production environments where rotating credentials or shared secrets management is needed. You do not need this to run circuit-agent.
+> **Optional upgrade.** The standard `.env` file is sufficient for most single-agent deployments and is what the setup wizard configures. This skill covers Infisical — a centralized secrets manager useful for teams or production environments where rotating credentials or shared secrets management is needed. You do not need this to run noelclaw.
 
-How to manage secrets for circuit-agent. The `.env` file is the primary mechanism for most deployments. Infisical is an optional upgrade for teams, multi-agent setups, or production environments that need centralized secret management.
+How to manage secrets for noelclaw. The `.env` file is the primary mechanism for most deployments. Infisical is an optional upgrade for teams or production environments that need centralized secret management.
 
 ## Standard setup — .env file
 
-circuit-agent loads secrets from `.env` at startup. This is sufficient for most single-agent deployments.
+noelclaw loads secrets from `.env` at startup. This is sufficient for most single-agent deployments.
 
 ```bash
 # .env (never commit this file — it's in .gitignore)
@@ -14,7 +14,7 @@ PRIVATE_KEY=your_hex_private_key
 BASE_RPC_URL=https://mainnet.base.org
 MINIMAX_API_KEY=sk-cp-...
 TELEGRAM_BOT_TOKEN=1234567890:AAH...
-CIRCUIT_INTERNAL_KEY=only_if_self_hosting
+NOELCLAW_INTERNAL_KEY=only_if_self_hosting
 ```
 
 Re-run the setup wizard at any time: `node agent.js setup`
@@ -42,20 +42,20 @@ sudo apt install infisical
 Store credentials in a protected file (never commit this):
 
 ```bash
-cat > ~/.circuit-agent/infisical-config.env << 'EOF'
+cat > ~/.noelclaw/infisical-config.env << 'EOF'
 INFISICAL_CLIENT_ID=your_machine_identity_client_id
 INFISICAL_CLIENT_SECRET=your_machine_identity_client_secret
 INFISICAL_PROJECT_ID=your_project_id
 INFISICAL_ENVIRONMENT=prod
 INFISICAL_TOKEN=
 EOF
-chmod 600 ~/.circuit-agent/infisical-config.env
+chmod 600 ~/.noelclaw/infisical-config.env
 ```
 
 ### Generate an access token
 
 ```bash
-source ~/.circuit-agent/infisical-config.env
+source ~/.noelclaw/infisical-config.env
 INFISICAL_TOKEN=$(infisical login \
   --method=universal-auth \
   --client-id="$INFISICAL_CLIENT_ID" \
@@ -69,7 +69,7 @@ Then save that token back into `infisical-config.env`.
 
 ```bash
 #!/bin/bash
-source ~/.circuit-agent/infisical-config.env
+source ~/.noelclaw/infisical-config.env
 
 infisical secrets get "$1" \
   --env="$INFISICAL_ENVIRONMENT" \
@@ -81,7 +81,7 @@ infisical secrets get "$1" \
 ### Run agent with all secrets injected
 
 ```bash
-source ~/.circuit-agent/infisical-config.env
+source ~/.noelclaw/infisical-config.env
 infisical run \
   --env="$INFISICAL_ENVIRONMENT" \
   --projectId="$INFISICAL_PROJECT_ID" \
@@ -94,7 +94,7 @@ infisical run \
 ## Security rules
 
 - **NEVER log or print `PRIVATE_KEY`** — leaking it = losing all wallet funds
-- `infisical-config.env` should be `chmod 600` — readable only by owner
+- `~/.noelclaw/infisical-config.env` should be `chmod 600` — readable only by owner
 - Never write secrets to files that get committed to git (`.env` and `infisical-config.env` are in `.gitignore`)
 - Tokens expire — regenerate if you get auth errors
 

@@ -5,9 +5,9 @@ Momentum trading is different from dip-reversal. Instead of buying the dip and w
 ## When to use this
 
 Use momentum entries when:
-- Market is in strong uptrend (SOL > 0% 24h, DeFi TVL rising)
+- Market is in strong uptrend (ETH > 0% 24h, DeFi TVL rising)
 - You have capital to deploy but no quality dip-reversals in scanner
-- Swarm feed shows multiple buy_signals on same token
+- market_overview shows multiple tokens with strong positive momentum
 
 ## Momentum entry criteria
 
@@ -21,7 +21,7 @@ Unlike dip-reversal, momentum trades need **positive** 1h AND 5m:
 | 5m vs 1h buy ratio | 5m > 1h | Medium |
 | Volume 1h | > $75k | Medium |
 | 6h trend | > 0% | Bonus |
-| Swarm consensus | bullish | Bonus |
+| market_overview trend | bullish | Bonus |
 
 **Minimum to enter**: 5m > +2%, 1h > +5%, buy ratio > 60%, volume > $50k
 
@@ -60,7 +60,7 @@ Score = 0
 + 20 pts if 1h > +10%
 + 10 pts if 1h +5-10%
 + 10 pts if 6h > 0%
-+ 10 pts if swarm consensus bullish (2+ agents)
++ 10 pts if market_overview shows broad bullish momentum
 -20 pts if priceChange1h > +30% (already pumped, late)
 
 Enter if score >= 55
@@ -72,7 +72,7 @@ Enter if score >= 55
 2. Check token_info risk — skip if DANGER
 3. Confirm buy ratio trending up (5m > 1h)
 4. Set tighter TP/SL before buying
-5. Max position size: 0.008 SOL (smaller than reversal — higher risk)
+5. Max position size: 0.0008 ETH (smaller than reversal — higher risk)
 
 ## Exit discipline
 
@@ -86,17 +86,16 @@ Momentum fades fast. Key rules:
 
 Before any momentum trade, check:
 ```
-get_market_overview()
-→ SOL 24h change
+oracle_prices → ETH 24h change
 ```
 
-If SOL is down > 5% in 24h, skip momentum trades entirely. Tokens pump less in bear macro.
+If ETH is down > 5% in 24h, skip momentum trades entirely. Tokens pump less in bear macro.
 
-## Swarm signal as entry trigger
+## Confirming momentum entry
 
-Strong momentum trigger:
-- 2+ different agents publish buy_signal for same mint within 10 minutes
-- Each with score > 55
-- Consensus = "bullish"
+Strong momentum confirmation:
+- scan_tokens returns score >= 55 for the token
+- market_overview shows the token trending with high volume
+- token_price shows buy ratio > 60% on 5m candle
 
-This is the strongest possible signal. Enter immediately (within 2 scan cycles).
+Multiple signals aligned = strongest entry conviction. Enter within 2 scan cycles.

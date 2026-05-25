@@ -21,7 +21,7 @@ Then classify the current regime (below). Everything after flows from this class
 - Fear & Greed index > 60
 - Base DeFi TVL trending up week-over-week
 - Top pools showing increasing volume
-- Swarm feed dominated by buy_signals
+- market_overview shows strong trending tokens with rising volume
 
 **Behavior in Bull:**
 - Accept lower scan scores (threshold: 35 vs 55)
@@ -38,7 +38,7 @@ Then classify the current regime (below). Everything after flows from this class
 - ETH ±5% 24h, oscillating
 - Fear & Greed 40-60 (neutral)
 - TVL flat, volume steady but not rising
-- Mixed swarm feed (buys and sells in equal proportion)
+- Mixed market signals (scan returns moderate scores, mixed momentum)
 
 **Behavior in Ranging:**
 - Stick to score >= 55 (standard threshold)
@@ -55,7 +55,7 @@ Then classify the current regime (below). Everything after flows from this class
 - ETH < -5% 24h OR < -10% 7d
 - Fear & Greed < 35
 - TVL declining
-- Swarm feed has rug_alerts, sell_signals dominating
+- Scan returns few or no candidates passing filters
 - Most tokens showing negative 6h AND 24h
 
 **Behavior in Bear:**
@@ -63,7 +63,7 @@ Then classify the current regime (below). Everything after flows from this class
 - Only DEEP-REVERSAL pattern (1h drop > -10%) with strong bounce
 - Tight stops: reduce stop-loss to -4% (don't wait for -6%)
 - Max 2 open positions, never 3
-- Allocate idle SOL to LSTs rather than forcing trades
+- Allocate idle ETH to LSTs rather than forcing trades
 - Check `defi_overview` — if TVL is collapsing, even "good" setups fail
 
 ---
@@ -78,7 +78,7 @@ Then classify the current regime (below). Everything after flows from this class
 
 **Behavior in Crash:**
 - No new entries. Close all positions at market if possible.
-- Swap to cbETH or hold ETH (LSTs hold peg during crashes)
+- Swap to cbETH or hold ETH (LSTs maintain ETH peg during crashes)
 - Run `get_news` to understand the cause
 - Wait for Fear & Greed to recover above 30 before re-entering
 - Publish a bear_signal to the swarm
@@ -102,7 +102,7 @@ The Fear & Greed index measures:
 - 25-50: fear → only strong setups, smaller sizes
 - < 25: extreme fear → sit out OR contrarian high-conviction only
 
-**Contrarian signal**: When Fear & Greed hits < 15 and SOL holds support, this is historically one of the best entry points. The crowd is capitulating — you accumulate.
+**Contrarian signal**: When Fear & Greed hits < 15 and ETH holds support, this is historically one of the best entry points. The crowd is capitulating — you accumulate.
 
 ### defi_overview — where money is moving
 
@@ -134,7 +134,7 @@ Before your first trade of any session:
 5. Recall relevant notes: `recall_notes` with query "regime" or "macro"
 6. Adjust your thresholds for this session
 
-Write the regime to notes: `save_note(key="current_regime", value="Bear: ETH -8% 24h, F&G=28, TVL flat")`
+Write the regime to notes: `save_note(key="current_regime_2026-05", value="Bear: ETH -8% 24h, F&G=28, TVL flat")`
 
 This way, every heartbeat and reflect cycle knows the macro context without re-running all tools.
 
@@ -152,12 +152,12 @@ Different token types perform differently across regimes:
 
 In a ranging market, rotate toward DeFi protocol tokens (lower volatility, real revenue). In a bull market, memes outperform everything. In a bear, LSTs are the only safe harbor.
 
-## Swarm as sentiment signal
+## Market data as sentiment signal
 
-The swarm feed is a real-time sentiment indicator:
-- Count buy_signals vs sell_signals in the last 15 entries
-- If > 70% are buy_signals → swarm is bullish, confirms Bull regime
-- If > 50% are sell_signals or rug_alerts → swarm is bearish, confirms Bear
-- Mixed → Ranging
+Use available tools to confirm your regime read:
+- `market_overview` → are trending tokens showing positive or negative momentum?
+- `scan_tokens` → how many candidates pass filters? (many = bull, few = bear, none = crash)
+- `top_pools` → is DEX volume rising or falling? Rising volume confirms bull regime.
+- `market_sentiment` → Fear & Greed index as the primary crowd sentiment signal
 
-Cross-reference swarm sentiment with your macro regime read. When they diverge, weight the macro data more heavily (swarm can overreact short-term; macro trends are slower but more reliable).
+Cross-reference multiple signals. When they diverge, weight `oracle_prices` macro direction most heavily — macro trends are slower but more reliable than short-term scan noise.

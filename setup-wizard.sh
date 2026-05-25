@@ -1,5 +1,5 @@
 #!/bin/bash
-# circuit-agent setup wizard
+# noelclaw setup wizard
 # Usage:
 #   ./setup-wizard.sh                              — interactive setup
 #   ./setup-wizard.sh --keypair KEY --address ADDR — called by: node agent.js init
@@ -107,7 +107,7 @@ fi
 
 # ── Step 1: Base RPC URL ──────────────────────────────────────────────────────
 
-step_header 1 5 "BASE RPC URL"
+step_header 1 4 "BASE RPC URL"
 echo -e "  ${DIM}Used for all Base chain queries: wallet balance, token data, swap execution.${NC}"
 echo -e "  ${DIM}Free options: Alchemy, Infura, QuickNode — or use the public Base endpoint.${NC}"
 echo -e "  ${DIM}Get one (30 seconds):${NC} ${YELLOW}https://alchemy.com${NC} ${DIM}→ create app → select Base → copy RPC URL${NC}"
@@ -134,7 +134,7 @@ echo -e "  ${GREEN}✓  RPC configured${NC}"
 
 # ── Step 2: LLM provider ──────────────────────────────────────────────────────
 
-step_header 2 5 "LLM PROVIDER"
+step_header 2 4 "LLM PROVIDER"
 echo -e "  ${DIM}The AI brain — used for Telegram chat, reflection, and exception handling.${NC}"
 echo ""
 echo -e "  ${GREEN}1${NC}  ${BOLD}MiniMax${NC}     ${DIM}·  cloud, MiniMax-M2.7, API key required${NC}"
@@ -175,7 +175,7 @@ echo -e "  ${GREEN}✓  Provider: ${BRIGHT_GREEN}${LLM_PROVIDER}${NC}"
 
 # ── Step 3: AI model ──────────────────────────────────────────────────────────
 
-step_header 3 5 "AI MODEL"
+step_header 3 4 "AI MODEL"
 
 if [ "$LLM_PROVIDER" = "ollama" ]; then
   echo -e "  ${DIM}Model must be pulled first:${NC}  ollama pull <name>"
@@ -212,7 +212,7 @@ echo -e "  ${GREEN}✓  Model: ${BRIGHT_GREEN}${AGENT_MODEL}${NC}"
 
 # ── Step 4: Telegram bot token ────────────────────────────────────────────────
 
-step_header 4 5 "TELEGRAM  (optional)"
+step_header 4 4 "TELEGRAM  (optional)"
 echo -e "  ${DIM}Chat interface, trade alerts, and heartbeat messages.${NC}"
 echo -e "  ${DIM}Create a bot:${NC}  Telegram → ${YELLOW}@BotFather${NC} → /newbot"
 echo ""
@@ -236,34 +236,8 @@ else
   echo -e "  ${DIM}Skipped — add TELEGRAM_BOT_TOKEN to .env later to enable.${NC}"
 fi
 
-# ── Step 5: CIRCUIT Data API ────────────────────────────────────────────────────
-
-step_header 5 5 "CIRCUIT DATA API"
-echo -e "  ${DIM}Market data, rug checks, swarm intelligence, and token analysis.${NC}"
-echo ""
-echo -e "  ${GREEN}public${NC}       ${BOLD}https://api.circuitllm.dev${NC}  ${DIM}·  requires CIRCUIT balance${NC}"
-echo -e "  ${GREEN}self-hosted${NC}  http://localhost:18700  ${DIM}·  free if running circuit-data-api locally${NC}"
-echo ""
-EXISTING_BASE=$(_cfg_get "api.baseUrl")
-echo -e "  ${DIM}current:${NC}  ${YELLOW}${EXISTING_BASE:-https://api.circuitllm.dev}${NC}"
-read -rp "  API base URL (Enter to keep): " API_BASE
-API_BASE="${API_BASE:-${EXISTING_BASE:-https://api.circuitllm.dev}}"
-
-EXISTING_IK=$(_env_get "CIRCUIT_INTERNAL_KEY")
-read -rp "  Internal key for self-hosted bypass (Enter to skip): " _IK_INPUT
-if [[ -n "$_IK_INPUT" ]]; then
-  if [[ "$_IK_INPUT" == pnk_* ]] || [[ "$_IK_INPUT" == MCow* ]]; then
-    echo -e "  ${RED}✗  That looks like a node keypair (pnk_/MCow…), not an internal key.${NC}"
-    echo -e "  ${DIM}  Find your key: circuit-data-api/.env → CIRCUIT_DATA_API_INTERNAL_KEY${NC}"
-    echo -e "  ${DIM}  Keeping previous value.${NC}"
-    CIRCUIT_INTERNAL_KEY="$EXISTING_IK"
-  else
-    CIRCUIT_INTERNAL_KEY="$_IK_INPUT"
-  fi
-else
-  CIRCUIT_INTERNAL_KEY="$EXISTING_IK"
-fi
-echo -e "  ${GREEN}✓  API: ${BRIGHT_GREEN}${API_BASE}${NC}"
+# ── (Step 5 removed — no external API required) ──────────────────────────────
+# All market data comes from free public sources (DexScreener, GeckoTerminal, GoPlusLabs)
 
 # ── Write .env ────────────────────────────────────────────────────────────────
 
@@ -273,12 +247,11 @@ echo -e "  ${DIM}writing .env …${NC}"
 KEYPAIR="${KEYPAIR_ARG:-$(_env_get "PRIVATE_KEY")}"
 
 cat > "$ENV_FILE" << EOF
-# circuit-agent environment — updated $(date -u +%Y-%m-%dT%H:%M:%SZ)
+# noelclaw environment — updated $(date -u +%Y-%m-%dT%H:%M:%SZ)
 PRIVATE_KEY=${KEYPAIR}
 BASE_RPC_URL=${BASE_RPC_URL}
 MINIMAX_API_KEY=${MINIMAX_KEY}
 TELEGRAM_BOT_TOKEN=${TG_TOKEN}
-CIRCUIT_INTERNAL_KEY=${CIRCUIT_INTERNAL_KEY}
 EOF
 
 echo -e "  ${GREEN}✓  .env written${NC}"
@@ -301,9 +274,6 @@ if ('${OLLAMA_BASE_URL}') local.llm.baseUrl = '${OLLAMA_BASE_URL}';
 
 local.telegram = local.telegram ?? {};
 if ('${TG_CHAT_ID}') local.telegram.heartbeatChatId = '${TG_CHAT_ID}';
-
-local.api = local.api ?? {};
-local.api.baseUrl = '${API_BASE}';
 
 writeFileSync(localPath, JSON.stringify(local, null, 2) + '\n');
 console.log('  \x1b[32m✓\x1b[0m  config/agent.local.json updated');
@@ -337,5 +307,5 @@ echo -e "  ${CYAN}  3.${NC} ${BRIGHT_GREEN}node agent.js setup${NC}  — change 
 echo ""
 echo -e "  ${DIM}optional${NC}"
 echo -e "  ${DIM}  personality${NC}   cp soul.md soul.local.md"
-echo -e "  ${DIM}  as service${NC}    systemctl --user enable --now circuit-agent"
+echo -e "  ${DIM}  as service${NC}    systemctl --user enable --now noelclaw"
 echo ""

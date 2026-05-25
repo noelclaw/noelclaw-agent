@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// scripts/update.js — safe upstream updater for circuit-agent
+// scripts/update.js — safe upstream updater for noelclaw
 //
 // Pulls the latest code from GitHub without overwriting your customizations.
 // Your data, secrets, and personal config are always protected.
@@ -148,15 +148,15 @@ async function main() {
     process.exit(0);
   }
 
-  print('\ncircuit-agent updater');
-  print('═══════════════════');
+  print('\nnoelclaw updater');
+  print('════════════════');
 
   // 1. Verify we're in a git repo
   if (!isGitRepo()) {
     print('\n✗ Not a git repository.');
-    print('  You downloaded circuit-agent as a zip rather than cloning it from GitHub.');
+    print('  You downloaded noelclaw as a zip rather than cloning it from GitHub.');
     print('  To enable updates, re-install by cloning:');
-    print('    git clone https://github.com/circuitllm/agent');
+    print('    git clone https://github.com/noelclaw/agent');
     print('  Then copy your .env and data/ directory into the new clone.\n');
     process.exit(1);
   }

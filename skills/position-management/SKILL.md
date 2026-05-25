@@ -16,7 +16,7 @@ The autonomous monitor checks every 30s. It exits in this priority order:
 You should manually sell when:
 - Token shows signs of rug not caught at entry (LP pulled, supply spike, verified wallet draining)
 - Swarm feed fills with rug_alert signals for this mint
-- Macro shock (SOL dumps >10% in 5min) — better to exit and re-enter later
+- Macro shock (ETH dumps >10% in 5min) — better to exit and re-enter later
 - Position is > 30min old, -4% P&L, and showing no recovery signal
 
 ## Never do this

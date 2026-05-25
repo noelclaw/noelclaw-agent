@@ -1,7 +1,7 @@
 {
-  "name": "circuit-agent",
+  "name": "noelclaw",
   "version": "0.3.0",
-  "description": "LLM-powered Base chain trading agent with Telegram, tool-use, and CIRCUIT Data API",
+  "description": "Autonomous Base chain trading agent — scans, buys, monitors, reflects, and earns on Base",
   "main": "agent.js",
   "type": "commonjs",
   "scripts": {

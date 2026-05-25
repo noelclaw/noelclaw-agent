@@ -1,6 +1,6 @@
 # Configuration Reference
 
-circuit-agent uses a two-file config system. `config/agent.json` is the repo default — updated by `git pull`. Your personal overrides go in `config/agent.local.json`, which is gitignored and never touched by updates.
+noelclaw uses a two-file config system. `config/agent.json` is the repo default — updated by `git pull`. Your personal overrides go in `config/agent.local.json`, which is gitignored and never touched by updates.
 
 You only need to include the keys you want to change:
 
@@ -69,19 +69,6 @@ You only need to include the keys you want to change:
 }
 ```
 
-## Swarm
-
-```json
-{
-  "swarm": {
-    "enabled": true,
-    "autoPublish": true,             // Publish buy/sell signals on every trade
-    "minReputationToFollow": 40,     // Only factor signals above this reputation score
-    "consensusBoostFactor": 1.2      // Score boost when swarm agrees (+20%)
-  }
-}
-```
-
 ## Survival & Reinvest
 
 ```json
@@ -89,7 +76,7 @@ You only need to include the keys you want to change:
   "survival": {
     "minEthWarning": 0.003,  // Warn when ETH drops below this
     "minEthPause": 0.001,    // Pause new buys below this
-    "circuitReinvestPct": 0.25 // % of profit auto-converted to CIRCUIT (default 25%)
+    "noelclawReinvestPct": 0.25 // % of profit auto-converted to NOELCLAW (default 25%)
   }
 }
 ```
@@ -184,9 +171,8 @@ The auto-scanner uses a 6-component scoring system (0–100):
 Patterns: `SHALLOW-DIP` (1h > −3%), `DIP-BUY` (−3% to −5%), `REVERSAL` (−5% to −10%), `DEEP-REVERSAL` (< −10%)
 
 Before buying, the scanner also:
-- Checks the swarm blacklist
-- Runs a rug check on the top candidate
-- Checks swarm consensus — if 2+ peer agents are bullish, applies `consensusBoostFactor`
+- Runs a rug check (GoPlus) on the top candidate
+- Checks token_holders for whale concentration
 
 ---
 
@@ -200,5 +186,4 @@ All set in `.env` by the setup wizard. See `.env.example` for the full template.
 | `BASE_RPC_URL` | Base chain RPC endpoint URL |
 | `MINIMAX_API_KEY` | MiniMax API key (cloud LLM) |
 | `TELEGRAM_BOT_TOKEN` | Telegram bot token from @BotFather |
-| `CIRCUIT_INTERNAL_KEY` | Self-hosters only — bypasses x402 payment on localhost |
-| `CIRCUIT_API_URL` | Override the CIRCUIT API base URL (env takes priority over config) |
+| `NOELCLAW_INTERNAL_KEY` | Internal key for self-hosted deployments |

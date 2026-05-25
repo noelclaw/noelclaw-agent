@@ -21,13 +21,13 @@ labels: bug
 ## Environment
 
 - Node.js version: <!-- node --version -->
-- circuit-agent version: <!-- git rev-parse --short HEAD -->
+- noelclaw version: <!-- git rev-parse --short HEAD -->
 - LLM provider: <!-- minimax / ollama -->
 - Running via: <!-- systemd / manual / other -->
 
 ## Relevant logs
 
-<!-- Paste relevant lines from logs/processor.log or journalctl --user -u circuit-agent -->
+<!-- Paste relevant lines from logs/processor.log or journalctl --user -u noelclaw -->
 
 ```
 paste logs here

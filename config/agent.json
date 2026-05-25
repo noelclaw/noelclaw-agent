@@ -1,8 +1,7 @@
 {
-  "_comment": "circuit-agent configuration for Base chain — edit these values before starting",
+  "_comment": "noelclaw configuration for Base chain — edit these values before starting",
   "api": {
-    "baseUrl": "https://api.circuitllm.dev",
-    "_note": "Public CIRCUIT API. Self-hosters: change to http://localhost:18960 and set CIRCUIT_INTERNAL_KEY in .env to bypass payment."
+    "_note": "Internal API config — no external API key required. All market data comes from free public sources."
   },
   "strategy": {
     "scanIntervalMs": 300000,
@@ -19,9 +18,9 @@
     "buyCooldownMinutes": 60,
     "_strategy_note": "entryBudgetEth: ETH per trade. buyCooldownMinutes: skip re-entry on the same token for this many minutes after closing."
   },
-  "circuit": {
-    "minCircuitBalance": 5000,
-    "_note": "Agent will warn when CIRCUIT balance drops below this (for API payment top-up)"
+  "noelclaw": {
+    "tokenAddress": "0x4B524015D54a27d4472F5c59c570730D69499Ba3",
+    "_note": "NOELCLAW token on Base (ERC-20). The agent tracks and displays this balance."
   },
   "risk": {
     "maxEntry1hDropPct": -15,
@@ -38,8 +37,8 @@
   "survival": {
     "minEthWarning": 0.005,
     "minEthPause": 0.001,
-    "circuitReinvestPct": 0.25,
-    "_note": "Warn when ETH < minEthWarning. Pause new buys when ETH < minEthPause. circuitReinvestPct: fraction of each profit used to buy CIRCUIT (0.25 = 25%)."
+    "noelclawReinvestPct": 0.25,
+    "_note": "Warn when ETH < minEthWarning. Pause new buys when ETH < minEthPause. noelclawReinvestPct: fraction of each profit used to buy NOELCLAW (0.25 = 25%)."
   },
   "reflect": {
     "intervalMs": 14400000,
@@ -55,13 +54,6 @@
     "intervalMs": 300000,
     "contextRefreshMs": 1800000,
     "_note": "intervalMs: proactive check-in cadence (default 5 min, 0 to disable). contextRefreshMs: how often to refresh cached ETH price + Fear & Greed index (default 30 min)."
-  },
-  "swarm": {
-    "enabled": true,
-    "autoPublish": true,
-    "minReputationToFollow": 40,
-    "consensusBoostFactor": 1.2,
-    "_note": "autoPublish: emit buy/sell signals automatically on trade execution. minReputationToFollow: only factor signals from agents above this reputation score (0-100). consensusBoostFactor: multiply scan score by this when swarm consensus agrees (e.g. 1.2 = +20% score boost)."
   },
   "agentLoop": {
     "intervalMs": 5400000,

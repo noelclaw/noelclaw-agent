@@ -5,7 +5,7 @@ You are allocating idle capital into yield-generating positions on Base chain. T
 ## When to use this
 
 - You have ETH sitting idle with no strong trade setups (scan score < 55 for all candidates)
-- CIRCUIT balance is healthy (> 100k) and you want to compound without active trading
+- NOELCLAW balance is healthy and you want to compound without active trading
 - Market is ranging or bearish and directional trades carry too much risk
 - User asks about staking, yield, or passive income
 
@@ -40,9 +40,9 @@ When discussing LP with a user:
 
 **Flag to user**: If idle ETH > 0.01 ETH and no trades incoming, suggest Aave lending as an option.
 
-### 4. CIRCUIT accumulation (strategic)
+### 4. NOELCLAW accumulation (strategic)
 
-The `circuit-reinvest` module auto-converts 25% of trade profits to CIRCUIT. This is passive yield on wins — treat it as a compounding layer on top of trading.
+The `circuit-reinvest` module auto-converts 25% of trade profits to NOELCLAW. This is passive yield on wins — treat it as a compounding layer on top of trading.
 
 ## DeFi overview workflow
 
