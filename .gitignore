@@ -27,6 +27,9 @@ walkthrough.md
 .DS_Store
 Thumbs.db
 
+# Claude Code internal
+CLAUDE.md
+
 # Editor
 .vscode/
 .idea/

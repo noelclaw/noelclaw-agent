@@ -109,7 +109,7 @@ async function cmdInit() {
   const address   = evmWallet.address;
   const privKey   = evmWallet.privateKey; // 0x-prefixed hex
 
-  console.log('\n=== circuit-agent init (Base chain) ===\n');
+  console.log('\n=== noelclaw init (Base chain) ===\n');
   console.log(`New EVM wallet: ${address}`);
   console.log('(setup wizard starting — your address will be shown again)\n');
 
@@ -144,7 +144,7 @@ async function cmdInit() {
     if (resp.ok) {
       const d = await resp.json();
       agentId  = d.agentId;
-      console.log(`\n✓ Registered with CIRCUIT swarm — agent ID: ${agentId}`);
+      console.log(`\n✓ Registered with swarm — agent ID: ${agentId}`);
     }
   } catch { console.log('  (registry unavailable — will register on first start)'); }
 
@@ -156,12 +156,12 @@ async function cmdInit() {
   if (!fs.existsSync(profileFile)) {
     const initProfile = {
       version: 1,
-      schema:  'circuit-agent-profile/v1',
+      schema:  'noelclaw-profile/v1',
       identity: {
-        name:        'circuit-agent',
+        name:        'noelclaw',
         handle:      '',
         role:        'autonomous-trader',
-        description: 'LLM-powered Base chain trading agent on the CIRCUIT network.',
+        description: 'Noelclaw — autonomous AI trading agent on Base. Part of the Noelclaw AI OS.',
         createdAt,
         deviceId:    agentId ?? address,
       },
@@ -346,7 +346,20 @@ async function cmdStart() {
 
   initModules();
 
-  log('info', `=== circuit-agent v${PKG_VERSION} starting ===`);
+  const B = '\x1b[94m', DIM = '\x1b[2m', R = '\x1b[0m';
+  process.stdout.write([
+    '',
+    `${B}  ███╗   ██╗ ██████╗ ███████╗██╗      ██████╗██╗      █████╗ ██╗    ██╗${R}`,
+    `${B}  ████╗  ██║██╔═══██╗██╔════╝██║     ██╔════╝██║     ██╔══██╗██║    ██║${R}`,
+    `${B}  ██╔██╗ ██║██║   ██║█████╗  ██║     ██║     ██║     ███████║██║ █╗ ██║${R}`,
+    `${B}  ██║╚██╗██║██║   ██║██╔══╝  ██║     ██║     ██║     ██╔══██║██║███╗██║${R}`,
+    `${B}  ██║ ╚████║╚██████╔╝███████╗███████╗╚██████╗███████╗██║  ██║╚███╔███╔╝${R}`,
+    `${B}  ╚═╝  ╚═══╝ ╚═════╝ ╚══════╝╚══════╝ ╚═════╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝${R}`,
+    '',
+    `  ${DIM}autonomous trading agent · Base chain · v${PKG_VERSION}${R}`,
+    '',
+  ].join('\n') + '\n');
+  log('info', `=== noelclaw v${PKG_VERSION} starting ===`);
   try {
     await wallet.logBalances();
     const { warnings } = await wallet.checkMinimums(cfg);
@@ -456,7 +469,7 @@ function cmdLogs() {
     // Heartbeat exceptions
     { re: /Status built — (\d+) exception/,             fmt: (m) => `HEARTBEAT  ${m[1]} exception(s)` },
     // Startup / shutdown
-    { re: /=== circuit-agent v([\d.]+) starting ===/,     fmt: (m) => `STARTED  v${m[1]}` },
+    { re: /=== noelclaw v([\d.]+) starting ===/,     fmt: (m) => `STARTED  v${m[1]}` },
     { re: /\[AGENT\].*Shutdown/,                        fmt: ()  => `STOPPED` },
     // Telegram messages received
     { re: /\[TG\].*Message from (.+?):/,                fmt: (m) => `MSG    from ${m[1]}` },
