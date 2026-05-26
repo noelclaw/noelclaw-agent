@@ -15,6 +15,10 @@
 'use strict';
 
 process.stdout.on('error', e => { if (e.code !== 'EPIPE') throw e; });
+process.on('unhandledRejection', (reason) => {
+  const msg = reason?.message ?? String(reason);
+  process.stdout.write(`[${new Date().toISOString()}] [AGENT] [WARN] Unhandled rejection: ${msg}\n`);
+});
 
 const fs   = require('fs');
 const path = require('path');
